@@ -24,6 +24,8 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.core.paginator import Paginator, InvalidPage
 from django.core import exceptions
 
+BLOCKED_FORUMS = [6, 15, 19]
+
 def phpbb_config_context(request):
     try:
         sitename = PhpbbConfig.objects.get(pk='sitename').config_value
@@ -37,6 +39,8 @@ def phpbb_config_context(request):
     }
 
 def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
+    if forum_id in [str(x) for x in BLOCKED_FORUMS]:
+        raise Http404
     if page_no:
         try:
             if int(page_no) == 1:
@@ -103,6 +107,8 @@ def topic(request, topic_id, slug, page_no = None, paginate_by = 10):
         raise Http404
     try:
         t = PhpbbTopic.objects.get(pk = topic_id)
+        if t.forum.pk in BLOCKED_FORUMS:
+          raise Http404
     except exceptions.ObjectDoesNotExist, e:
         raise Http404
     posts = t.phpbbpost_set.all()
@@ -144,9 +150,13 @@ def unanswered(request):
 def handle_viewtopic(request):
     if request.GET.has_key('t'):
         topic_id = request.GET['t']
-        t = PhpbbTopic.objects.get(pk = topic_id)
-        return HttpResponseRedirect(t.get_absolute_url())
+        try:
+          topic_id_int = int(topic_id)
+          t = get_object_or_404(PhpbbTopic, pk=topic_id_int)
+          return HttpResponseRedirect(t.get_absolute_url())
+        except ValueError, e:
+          raise Http404
     if request.GET.has_key('p'):
-        topic_id = request.GET['p']
-        t = PhpbbPost.objects.get(pk = topic_id)
-        return HttpResponseRedirect(t.get_absolute_url())
+        post_id = request.GET['p']
+        p = get_object_or_404(PhpbbPost, pk=post_id)
+        return HttpResponseRedirect(p.get_absolute_url())
