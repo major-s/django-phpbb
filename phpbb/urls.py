@@ -24,7 +24,15 @@ import models
 
 forumqs = (models.PhpbbForum.objects.
            # FIXME: hardcoded forum IDs
+           # They could be fixed by implementing permission tables
+           # from phpbb, but this runs into bug 373.
+           #
+           # http://code.djangoproject.com/ticket/373
+           #
+           # More information:
+           # http://code.djangoproject.com/wiki/MultipleColumnPrimaryKeys
            exclude(forum_id=15).
+           exclude(forum_id=19).
            exclude(forum_id=6).filter(parent__forum_id=0))
 
 forum_context = views.phpbb_config_context(None)
@@ -35,15 +43,15 @@ urlpatterns = patterns('',
     #     {'queryset': forumqs,
     #      'extra_context': forum_context}),
     (r'^%s/(?P<topic_id>[0-9]+)/(?P<slug>[\w-]*)/page(?P<page_no>[0-9]+)/$' % (
-    	    _("topics"),), 'django.contrib.phpbb.views.topic', ),
+    	    _("topics"),), 'phpbb.views.topic', ),
     (r'^%s/(?P<topic_id>[0-9]+)/(?P<slug>[\w-]*)/$' % (
-    	    _("topics"),), 'django.contrib.phpbb.views.topic', ),
+    	    _("topics"),), 'phpbb.views.topic', ),
     (r'^(?P<forum_id>[0-9]+)/(?P<slug>[\w-]*)/$',
-        'django.contrib.phpbb.views.forum_index', ),
+        'phpbb.views.forum_index', ),
     (r'^(?P<forum_id>[0-9]+)/(?P<slug>[\w-]*)/page(?P<page_no>[0-9]+)/$',
-        'django.contrib.phpbb.views.forum_index', ),
+        'phpbb.views.forum_index', ),
     (r'^(?P<forum_id>[0-9]+)/$',
-        'django.contrib.phpbb.views.forum_index', {'slug': ''}),
-    (r'^%s/$' % (_("unanswered"),), 'django.contrib.phpbb.views.unanswered', ),
-    (r'^viewtopic.php$', 'django.contrib.phpbb.views.handle_viewtopic', ),
+        'phpbb.views.forum_index', {'slug': ''}),
+    (r'^%s/$' % (_("unanswered"),), 'phpbb.views.unanswered', ),
+    (r'^viewtopic.php$', 'phpbb.views.handle_viewtopic', ),
 )
