@@ -18,7 +18,7 @@
 # Boston, MA  02110-1301  USA
 
 from django.contrib import admin
-from django.contrib.phpbb import models as pm
+from phpbb import models as pm
 
 class PhpbbForumAdmin(admin.ModelAdmin):
     list_display = (
@@ -63,7 +63,7 @@ class PhpbbAclRoleOptionAdmin(admin.ModelAdmin):
     #                 'auth_option',
     #                 'auth_global')
 admin.site.register(pm.PhpbbAclOption, PhpbbAclRoleOptionAdmin)
-admin.site.register(pm.PhpbbAclRoleDatum)
+# admin.site.register(pm.PhpbbAclRoleDatum)
 # Composite keys support needed
 # admin.site.register(pm.PhpbbAclGroup)
 admin.site.register(pm.PhpbbGroup)
