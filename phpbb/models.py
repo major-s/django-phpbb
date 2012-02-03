@@ -25,6 +25,7 @@ from datetime import datetime
 from django.core import exceptions
 from django.utils.encoding import force_unicode
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 class PhpbbUser(models.Model):
     """Model for phpBB user."""
@@ -109,12 +110,23 @@ class PhpbbTopic(models.Model):
         		_("topics"),
         		self.topic_id,
         		self.get_slug())
+<<<<<<< HEAD
+=======
+
+    def get_external_url(self):
+        return (settings.PHPBB_URL + "/viewtopic.php?t=%s"
+                % (self.topic_id))
+>>>>>>> remotes/github/master
     def get_slug(self):
         return slugify(self.get_title())
     def topic_time(self):
         return datetime.fromtimestamp(self.topic_time_int)
     class Meta:
+<<<<<<< HEAD
         db_table = 'phpbb3_topics'
+=======
+        db_table = 'phpbb_topics'
+>>>>>>> remotes/github/master
         ordering = ['-topic_time_int']
 
 
@@ -135,8 +147,14 @@ class PhpbbPost(models.Model):
     def get_external_url(self):
         # Example:
         # http://www.atopowe-zapalenie.pl/forum/viewtopic.php?p=80491#p80491
+<<<<<<< HEAD
         return ("http://www.atopowe-zapalenie.pl/forum/viewtopic.php?p=%s#p%s"
                 % (self.post_id, self.post_id))
+=======
+        return (settings.PHPBB_URL + "/viewtopic.php?p=%s#p%s"
+                % (self.post_id, self.post_id))
+
+>>>>>>> remotes/github/master
     def get_absolute_url(self):
         return (u"/forum/%s/%s/%s/page%d/" %
                 (_("topics"),
@@ -147,7 +165,11 @@ class PhpbbPost(models.Model):
         """TODO: find out, which post in the row it is."""
         return 1
     class Meta:
+<<<<<<< HEAD
         db_table = 'phpbb3_posts'
+=======
+        db_table = 'phpbb_posts'
+>>>>>>> remotes/github/master
         ordering = ['post_time_int']
 
 
@@ -159,12 +181,32 @@ class PhpbbGroup(models.Model):
     group_desc = models.TextField()
     group_desc_bitfield = models.CharField(max_length=255)
     group_desc_options = models.IntegerField()
+<<<<<<< HEAD
     def __unicode__(self):
         return u"PhpbbGroup(%s, %s)" % (self.id, self.group_name)
     class Meta:
         db_table = 'phpbb3_groups'
         ordering = ['id']
 
+=======
+    members = models.ManyToManyField(PhpbbUser, through='PhpbbUserGroup')
+
+    def __unicode__(self):
+        return u"PhpbbGroup(%s, %s)" % (self.id, self.group_name)
+    class Meta:
+        db_table = 'phpbb_groups'
+        ordering = ['id']
+
+class PhpbbUserGroup(models.Model):
+    group = models.ForeignKey(PhpbbGroup, primary_key=True)
+    user = models.ForeignKey(PhpbbUser, primary_key=True)
+    group_leader = models.IntegerField()
+    user_pending = models.IntegerField()
+    def __unicode__(self):
+        return u"PhpbbUserGroup(%s, %s)" % (self.group_id, self.user_id)
+    class Meta:
+        db_table = 'phpbb_user_group'
+>>>>>>> remotes/github/master
 
 class PhpbbAclRole(models.Model):
     role_id = models.IntegerField(primary_key=True)
@@ -175,7 +217,11 @@ class PhpbbAclRole(models.Model):
     def __unicode__(self):
         return force_unicode(self.role_name)
     class Meta:
+<<<<<<< HEAD
         db_table = 'phpbb3_acl_roles'
+=======
+        db_table = 'phpbb_acl_roles'
+>>>>>>> remotes/github/master
         ordering = ['role_name']
 
 
@@ -188,7 +234,11 @@ class PhpbbAclOption(models.Model):
     def __unicode__(self):
         return self.auth_option
     class Meta:
+<<<<<<< HEAD
         db_table = 'phpbb3_acl_options'
+=======
+        db_table = 'phpbb_acl_options'
+>>>>>>> remotes/github/master
         ordering = ['auth_option_id']
 
 
@@ -211,7 +261,11 @@ class PhpbbAclOption(models.Model):
 ##                                   self.auth_setting)
 ##     class Meta:
 ##         primary_key = ('role_id', 'auth_option')
+<<<<<<< HEAD
 ##         db_table = 'phpbb3_acl_roles_data'
+=======
+##         db_table = 'phpbb_acl_roles_data'
+>>>>>>> remotes/github/master
 ##         verbose_name_plural = 'Phpbb acl role data'
 ##         unique_together = (('role_id', 'auth_option'),)
 ## 
@@ -232,7 +286,11 @@ class PhpbbAclOption(models.Model):
 ##                    self.auth_setting))
 ##     class Meta:
 ##         primary_key = ('forum', 'group', 'auth_option', 'auth_role')
+<<<<<<< HEAD
 ##         db_table = 'phpbb3_acl_groups'
+=======
+##         db_table = 'phpbb_acl_groups'
+>>>>>>> remotes/github/master
 ##         ordering = ['group', 'auth_role']
 
 
@@ -243,7 +301,11 @@ class PhpbbConfig(models.Model):
     def __unicode__(self):
         return self.config_name
     class Meta:
+<<<<<<< HEAD
         db_table = 'phpbb3_config'
+=======
+        db_table = 'phpbb_config'
+>>>>>>> remotes/github/master
         ordering = ['config_name']
         verbose_name = 'Phpbb config entry'
         verbose_name_plural = 'Phpbb config entries'
