@@ -24,7 +24,15 @@ import models
 
 forumqs = (models.PhpbbForum.objects.
            # FIXME: hardcoded forum IDs
+           # They could be fixed by implementing permission tables
+           # from phpbb, but this runs into bug 373.
+           #
+           # http://code.djangoproject.com/ticket/373
+           #
+           # More information:
+           # http://code.djangoproject.com/wiki/MultipleColumnPrimaryKeys
            exclude(forum_id=15).
+           exclude(forum_id=19).
            exclude(forum_id=6).filter(parent__forum_id=0))
 
 forum_context = views.phpbb_config_context(None)
