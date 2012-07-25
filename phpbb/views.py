@@ -23,8 +23,7 @@ from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response
 from django.core.paginator import Paginator, InvalidPage
 from django.core import exceptions
-
-BLOCKED_FORUMS = [6, 15, 19]
+from django.conf import settings
 
 def phpbb_config_context(request):
     try:
@@ -39,7 +38,7 @@ def phpbb_config_context(request):
     }
 
 def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
-    if forum_id in [str(x) for x in BLOCKED_FORUMS]:
+    if forum_id in [str(x) for x in settings.PHPBB_BLOCKED_FORUMS]:
         raise Http404
     if page_no:
         try:
@@ -107,7 +106,7 @@ def topic(request, topic_id, slug, page_no = None, paginate_by = 10):
         raise Http404
     try:
         t = PhpbbTopic.objects.get(pk = topic_id)
-        if t.forum.pk in BLOCKED_FORUMS:
+        if t.forum.pk in settings.PHPBB_BLOCKED_FORUMS:
           raise Http404
     except exceptions.ObjectDoesNotExist, e:
         raise Http404
