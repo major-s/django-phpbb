@@ -67,7 +67,7 @@ class PhpbbBackend:
             logging.info("Creating new Django user '%s'" % username)
             if username:
                 user = User(username = username, password = "")
-                user.is_staff = True
+                user.is_staff = False
                 user.is_superuser = False
 
                 user.email = phpbb_user.user_email
