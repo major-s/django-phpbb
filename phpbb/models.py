@@ -17,6 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor,
 # Boston, MA  02110-1301  USA
 
+import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
@@ -48,7 +49,7 @@ class PhpbbUser(models.Model):
     def user_lastvisit(self):
         return datetime.fromtimestamp(self.user_lastvisit_int)
     class Meta:
-        db_table = 'phpbb3_users'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'users'
         ordering = ['username']
 
 
@@ -80,7 +81,7 @@ class PhpbbForum(models.Model):
     def get_slug(self):
         return slugify(self.forum_name)
     class Meta:
-        db_table = 'phpbb3_forums'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'forums'
         ordering = ['forum_name']
 
 
@@ -118,7 +119,7 @@ class PhpbbTopic(models.Model):
     def topic_time(self):
         return datetime.fromtimestamp(self.topic_time_int)
     class Meta:
-        db_table = 'phpbb3_topics'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'topics'
         ordering = ['-topic_time_int']
 
 
@@ -152,7 +153,7 @@ class PhpbbPost(models.Model):
         """TODO: find out, which post in the row it is."""
         return 1
     class Meta:
-        db_table = 'phpbb3_posts'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'posts'
         ordering = ['post_time_int']
 
 
@@ -169,7 +170,7 @@ class PhpbbGroup(models.Model):
     def __unicode__(self):
         return u"PhpbbGroup(%s, %s)" % (self.id, self.group_name)
     class Meta:
-        db_table = 'phpbb3_groups'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'groups'
         ordering = ['id']
 
 class PhpbbUserGroup(models.Model):
@@ -191,7 +192,7 @@ class PhpbbAclRole(models.Model):
     def __unicode__(self):
         return force_unicode(self.role_name)
     class Meta:
-        db_table = 'phpbb3_acl_roles'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'acl_roles'
         ordering = ['role_name']
 
 
@@ -204,7 +205,7 @@ class PhpbbAclOption(models.Model):
     def __unicode__(self):
         return self.auth_option
     class Meta:
-        db_table = 'phpbb_acl_options'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'acl_options'
         ordering = ['auth_option_id']
 
 
@@ -259,7 +260,7 @@ class PhpbbConfig(models.Model):
     def __unicode__(self):
         return self.config_name
     class Meta:
-        db_table = 'phpbb_config'
+        db_table = settings.PHPBB_TABLE_PREFIX + 'config'
         ordering = ['config_name']
         verbose_name = 'Phpbb config entry'
         verbose_name_plural = 'Phpbb config entries'
