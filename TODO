@@ -6,6 +6,8 @@ To do list:
   - Option 1: use http://code.google.com/p/postmarkup/
     - Issues: Doesn't support integration with a real phpBB database
   - Option 2: port original bbcode[1].
+- Add support for access control, at the very least determining which forums
+  should be publicly visible and which shouldn't.
     
 [1] http://code.phpbb.com/repositories/entry/5/trunk/phpBB/includes/bbcode.php
     http://code.phpbb.com/repositories/entry/5/trunk/phpBB/includes/message_parser.php

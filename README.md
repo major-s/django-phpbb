@@ -10,9 +10,9 @@ a glue between phpBB3 and Django.
 
 ### A prerequisite: Django authentication ###
 
-First, prerequisites. Make sure your
-[http://docs.djangoproject.com/en/dev/topics/auth/#topics-auth Django
-authentication] is working. 
+First, prerequisites. Make sure your [Django
+authentication](http://docs.djangoproject.com/en/dev/topics/auth/#topics-auth)
+is working. 
 
 If your Django website uses authentication already, you probably have the
 following lines in your `urls.py`.
@@ -21,14 +21,14 @@ following lines in your `urls.py`.
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout', ),
 
 If there are no such lines in your `urls.py`, your application probably doesn't
-use authentication. Go to the Django website for instructions and get your
-authentication done.
+use authentication. Consult the Django documentation for instructions to get
+your authentication to work.
 
-### PYTHONPATH ###
+## PYTHONPATH ##
 
 The django-phpbb directory must be in PYTHONPATH (or sys.path).
 
-### Adding phpbb3 authentication backend ###
+## Adding phpbb3 authentication backend ##
 
 Edit your `settings.py` and make sure the following lines are present:
 
