@@ -88,7 +88,7 @@ def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
         }, context_instance=c)
 
 
-def topic(request, topic_id, slug, page_no = None, paginate_by = 10):
+def topic(request, topic_id, slug, page_no=None, paginate_by=10):
     if page_no:
         try:
             if int(page_no) == 1:
@@ -134,8 +134,28 @@ def topic(request, topic_id, slug, page_no = None, paginate_by = 10):
     return render_to_response("phpbb/topic_detail.html", {
         'object': t,
         'posts': page.object_list,
-        }, context_instance=c)
+    }, context_instance=c)
 
+def topic_archive(request, topic_id, slug):
+    try:
+        t = PhpbbTopic.objects.get(pk=topic_id)
+        if t.forum.pk in settings.PHPBB_BLOCKED_FORUMS:
+            raise Http404
+    except exceptions.ObjectDoesNotExist:
+        raise Http404
+    posts = t.phpbbpost_set.all()
+    if t.get_slug() != slug:
+        return HttpResponseRedirect(t.get_absolute_url())
+    c = RequestContext(request, {}, [phpbb_config_context])
+    return render_to_response("phpbb/topic_archive_detail.html", {
+        'object': t,
+        'posts': posts,
+    }, context_instance=c)
+
+def topic_paginated_redirect(request, topic_id, slug, page_no=None,
+                             paginate_by=10):
+    """Compatibility view to redirect the old paginated URLs."""
+    return HttpResponseRedirect("../")
 
 def unanswered(request):
     topics = PhpbbTopic.objects.filter(topic_replies = 0)

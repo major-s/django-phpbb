@@ -1,0 +1,92 @@
+{% load i18n %}{% load phpbb %}<html>
+  <head>
+    <title>{% block bartitle %}{{ object }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}Archiwum forum atopowego, wątek „{{ object }}”{% endblock %}">
+    <style>
+      #sidebar { float: right; }
+      body, p {
+        font-size: 15px;
+        font-family: sans-serif;
+      }
+      ul.posts {
+        list-style: none;
+        padding: 0;
+      }
+      ul.posts > li {
+        clear: left;
+        border: 1px solid #DDD;
+        margin: 6px;
+      }
+      ul.posts ul {
+        list-style: none;
+        padding: 0;
+      }
+      ul.posts ul > li {
+        padding: 5px;
+        display: inline;
+      }
+      h2.topictitle {
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+      p.subtitle {
+        margin-top: 0;
+        color: gray;
+        font-style: italic;
+      }
+    </style>
+    <link rel="canonical" href="{{ object.get_absolute_url }}" />
+  </head>
+
+  <body>
+
+<div id="sidebar">
+{% block sidebar %}
+<script type="text/javascript"><!--
+google_ad_client = "pub-2555286933666992";
+/* Testowy do atopowe.pl */
+google_ad_slot = "4123815299";
+google_ad_width = 120;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+{% endblock %}
+</div><!-- sidebar -->
+
+
+    <div id="content">
+{% block content %}
+<h2 class="topictitle">{{ object }}</h2>
+<p class="subtitle">atopowe zapalnie skóry ‒ wątek z archiwum forum atopowe.pl</p>
+
+<a href="../../../"><strong>{% trans "Forum main page" %}</strong></a>
+→
+<a href="{{ object.forum.get_absolute_url }}"><strong>{{ object.forum }}</strong></a>
+
+<ul class="posts">
+{% for post in posts %}
+  <li>
+  <ul>
+    <!--
+    {% ifequal post.poster.user_avatar_type 1 %}
+      <li class="avatar">
+      <img class="avatar" alt="" src="https://www.atopowe.pl/forum/download/file.php?avatar={{ post.poster.user_avatar }}" />
+      </li>
+    {% endifequal %}
+    -->
+  <li class="username"><a name="#post-{{ post.post_id }}"></a>
+  <strong>{{ post.poster }}:</strong>
+  </li>
+  <li class="post-content">{{ post.post_text|bbcode }}</li>
+  </ul>
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}
+</div><!-- content -->
+
+</body>
+</head>

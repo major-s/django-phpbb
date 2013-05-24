@@ -43,9 +43,9 @@ urlpatterns = patterns('',
     #     {'queryset': forumqs,
     #      'extra_context': forum_context}),
     (r'^%s/(?P<topic_id>[0-9]+)/(?P<slug>[\w-]*)/page(?P<page_no>[0-9]+)/$' % (
-    	    _("topics"),), 'phpbb.views.topic', ),
+    	    _("topics"),), 'phpbb.views.topic_paginated_redirect', ),
     (r'^%s/(?P<topic_id>[0-9]+)/(?P<slug>[\w-]*)/$' % (
-    	    _("topics"),), 'phpbb.views.topic', ),
+    	    _("topics"),), 'phpbb.views.topic_archive', ),
     (r'^(?P<forum_id>[0-9]+)/(?P<slug>[\w-]*)/$',
         'phpbb.views.forum_index', ),
     (r'^(?P<forum_id>[0-9]+)/(?P<slug>[\w-]*)/page(?P<page_no>[0-9]+)/$',

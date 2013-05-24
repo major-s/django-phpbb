@@ -77,7 +77,7 @@ class PhpbbForum(models.Model):
     def __str__(self):
         return str(self.forum_name)
     def get_absolute_url(self):
-        return u"/forum/%s/%s/" % (self.forum_id, self.get_slug())
+        return u"/archiwum/%s/%s/" % (self.forum_id, self.get_slug())
     def get_slug(self):
         return slugify(self.forum_name)
     class Meta:
@@ -107,7 +107,7 @@ class PhpbbTopic(models.Model):
     def __unicode__(self):
         return self.get_title()
     def get_absolute_url(self):
-        return "/forum/%s/%s/%s/" % (
+        return "/archiwum/%s/%s/%s/" % (
         		_("topics"),
         		self.topic_id,
         		self.get_slug())
