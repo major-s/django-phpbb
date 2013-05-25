@@ -29,13 +29,17 @@ def phpbb_config_context(request):
     try:
         sitename = PhpbbConfig.objects.get(pk='sitename').config_value
         site_desc = PhpbbConfig.objects.get(pk='site_desc').config_value
-    except PhpbbConfig.DoesNotExist, e:
+    except PhpbbConfig.DoesNotExist as e:
         sitename = "PhpBB site"
         site_desc = "A forum: %s" % e
     return {
-            'sitename': sitename,
-            'site_desc': site_desc,
+        'sitename': sitename,
+        'site_desc': site_desc,
     }
+
+
+# These are example views. The django-phpbb project does currently not provide
+# templates.
 
 def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
     if forum_id in [str(x) for x in settings.PHPBB_BLOCKED_FORUMS]:
@@ -62,11 +66,8 @@ def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
         return HttpResponseRedirect(f.get_absolute_url())
     topics = f.phpbbtopic_set.all().order_by('-topic_last_post_time_int')
     paginator = Paginator(topics, paginate_by)
-    print "page_no:", page_no
     try:
-        print "requesting page"
         page = paginator.page(page_no)
-        print "got page", page
     except InvalidPage:
         raise Http404
     c = RequestContext(request, {
@@ -82,10 +83,10 @@ def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
             'hits' : 'what hits?',
             'page_list': range(1, paginator.num_pages + 1),
     }, [phpbb_config_context])
-    return render_to_response("phpbb/forum_detail.html", {
-        'object': f,
-        'topics': page.object_list,
-        }, context_instance=c)
+    return render_to_response(settings.PHPBB_FORUM_DETAIL_TMPL, {
+      'object': f,
+      'topics': page.object_list,
+    }, context_instance=c)
 
 
 def topic(request, topic_id, slug, page_no=None, paginate_by=10):
@@ -131,7 +132,7 @@ def topic(request, topic_id, slug, page_no=None, paginate_by=10):
             'hits' : "hits? what hits?",
             'page_list': range(1, paginator.num_pages + 1),
     }, [phpbb_config_context])
-    return render_to_response("phpbb/topic_detail.html", {
+    return render_to_response(settings.PHPBB_TOPIC_DETAIL_TMPL, {
         'object': t,
         'posts': page.object_list,
     }, context_instance=c)
@@ -147,7 +148,7 @@ def topic_archive(request, topic_id, slug):
     if t.get_slug() != slug:
         return HttpResponseRedirect(t.get_absolute_url())
     c = RequestContext(request, {}, [phpbb_config_context])
-    return render_to_response("phpbb/topic_archive_detail.html", {
+    return render_to_response(settings.PHPBB_TOPIC_ARCHIVE_DETAIL_TMPL, {
         'object': t,
         'posts': posts,
     }, context_instance=c)
@@ -167,6 +168,7 @@ def unanswered(request):
 
 
 def handle_viewtopic(request):
+    """The regular phpBB forum URLs, can be used for compatibility."""
     if request.GET.has_key('t'):
         topic_id = request.GET['t']
         try:

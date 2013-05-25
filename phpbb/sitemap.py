@@ -20,8 +20,21 @@
 # TODO: Implement sitemap caching.
 
 from django.contrib import sitemaps
+from phpbb import settings
 from models import PhpbbTopic, PhpbbPost, PhpbbForum
-from urls import forumqs
+
+# TODO: get rid of hardcoded forum IDs
+# They could be fixed by implementing permission tables
+# from phpbb, but this runs into bug 373.
+#
+# http://code.djangoproject.com/ticket/373
+#
+# More information:
+# http://code.djangoproject.com/wiki/MultipleColumnPrimaryKeys
+forumqs = (PhpbbForum.objects)
+for excluded_forum_id in settings.PHPBB_BLOCKED_FORUMS:
+  forumqs = forumqs.exclude(forum_id=excluded_forum_id)
+
 
 class PhpbbForumSitemap(sitemaps.Sitemap):
     def items(self):
