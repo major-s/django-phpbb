@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # This file is part of django-phpbb, integration between Django and phpBB
 # Copyright (C) 2007-2008  Maciej Bliziński
