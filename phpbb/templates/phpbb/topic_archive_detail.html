@@ -34,6 +34,9 @@
         color: gray;
         font-style: italic;
       }
+      span.optional-link, span.optional-link a {
+        color: #888;
+      }
     </style>
     <link rel="canonical" href="{{ object.get_absolute_url }}" />
   </head>
@@ -65,6 +68,9 @@ src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
 <a href="../../../"><strong>{% trans "Forum main page" %}</strong></a>
 →
 <a href="{{ object.forum.get_absolute_url }}"><strong>{{ object.forum }}</strong></a>
+<span class="optional-link">
+(→ <a href="{{ object.get_external_url }}" rel="nofollow">Wątek „{{ object }}” na forum</a>)
+</span>
 
 <ul class="posts">
 {% for post in posts %}
