@@ -2,9 +2,8 @@ import md5
 
 class PhpbbPassword(object):
     """PhpBB3 password compatibility class.
-    
-Ported from:
-http://code.phpbb.com/repositories/entry/5/trunk/phpBB/includes/functions.php
+    Ported from:
+    http://code.phpbb.com/repositories/entry/5/trunk/phpBB/includes/functions.php
     """
 
     itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -66,7 +65,7 @@ http://code.phpbb.com/repositories/entry/5/trunk/phpBB/includes/functions.php
 
     def _hash_crypt_private(self, password, setting, itoa64=itoa64):
         """The crypt function/replacement
-        
+
         'setting' means 'hash' or 'salt' here."""
         output = self.wrong
         if type(password) != str:

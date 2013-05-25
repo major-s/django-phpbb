@@ -39,7 +39,7 @@ class PhpbbBackend:
 
     def authenticate(self, username=None, password=None):
         """Authenticate user against phpBB3 database.
-        
+
         Check if the user exists in Django users. If not, create it.
         Then authenticate."""
         logging.debug("PhpbbBackend::authenticate()")
@@ -117,4 +117,3 @@ class PhpbbBackend:
             if perm[:perm.index('.')] == app_label:
                 return True
         return False
-

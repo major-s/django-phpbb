@@ -28,6 +28,7 @@ from django.utils.encoding import force_unicode
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
+
 class PhpbbUser(models.Model):
     """Model for phpBB user."""
     user_id = models.IntegerField(primary_key=True)
@@ -108,9 +109,9 @@ class PhpbbTopic(models.Model):
         return self.get_title()
     def get_absolute_url(self):
         return "/archiwum/%s/%s/%s/" % (
-        		_("topics"),
-        		self.topic_id,
-        		self.get_slug())
+            _("topics"),
+            self.topic_id,
+            self.get_slug())
     def get_external_url(self):
         return (settings.PHPBB_URL + "/viewtopic.php?f=%s&t=%s"
                 % (self.forum.forum_id, self.topic_id))
@@ -220,7 +221,7 @@ class PhpbbAclOption(models.Model):
 ##     role_id = models.ForeignKey(PhpbbAclRole,
 ##                                 db_column='role_id')
 ##     auth_option = models.ForeignKey(PhpbbAclOption,
-##     		                           db_column='auth_option_id')
+##                                   db_column='auth_option_id')
 ##     auth_setting = models.IntegerField()
 ##     def __unicode__(self):
 ##         return u"%s, %s => %s" % (self.role_id,
@@ -237,9 +238,9 @@ class PhpbbAclOption(models.Model):
 ##     group = models.ForeignKey(PhpbbGroup, db_column="group_id")
 ##     forum = models.ForeignKey(PhpbbForum, db_column="forum_id")
 ##     auth_option = models.ForeignKey(PhpbbAclOption,
-##     		                    db_column="auth_option_id")
+##                            db_column="auth_option_id")
 ##     auth_role = models.ForeignKey(PhpbbAclRole,
-##     		                  db_column="auth_role_id")
+##                          db_column="auth_role_id")
 ##     auth_setting = models.IntegerField()
 ##     def __unicode__(self):
 ##         return ((u"PhpbbAclGroup(%s, %s, %s, %s)")

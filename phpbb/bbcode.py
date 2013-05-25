@@ -45,7 +45,7 @@ class BitField(object):
 http://code.phpbb.com/repositories/entry/5/trunk/phpBB/includes/functions_content.php"""
     def __init__(self, bitfield=""):
         self.data = bitfield.decode("base64")
-    
+
     def get(self, n):
         byte = n >> 3
         if len(self.data) >= byte + 1:
@@ -118,7 +118,7 @@ Differences from the original class:
 - user is passed to the constructor (on original code, a global variable is
   used)
 """
-    
+
     def __init__(self, user, bitfield=""):
         self.user = user
         if bitfield:
