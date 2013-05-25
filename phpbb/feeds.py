@@ -21,6 +21,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.contrib.syndication.feeds import Feed
 from models import PhpbbPost
+from phpbb import querysets
 
 class LatestPhpbbPosts(Feed):
     """Returns the newest forum posts.
@@ -33,10 +34,6 @@ class LatestPhpbbPosts(Feed):
     link = "/forum/"
     description = _("Newest posts on the forum.")
     def items(self):
-        return (PhpbbPost.objects.order_by('-post_time_int').
-            exclude(topic__forum__forum_id=15).
-            exclude(topic__forum__forum_id=6).
-            exclude(topic__forum__forum_id=19)
-            [:20])
+        return querysets.forumqs.order_by('-post_time_int')[:20]
     def item_link(self, obj):
         return obj.get_external_url()
