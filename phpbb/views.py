@@ -19,6 +19,7 @@
 
 from models import PhpbbForum, PhpbbTopic, PhpbbPost, PhpbbConfig
 from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponsePermanentRedirect
 from django.template.context import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response
 from django.core.paginator import Paginator, InvalidPage
@@ -47,7 +48,7 @@ def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
     if page_no:
         try:
             if int(page_no) == 1:
-                return HttpResponseRedirect("../")
+                return HttpResponsePermanentRedirect("../")
         except ValueError:
             pass
         path_prefix = "../"
@@ -63,7 +64,7 @@ def forum_index(request, forum_id, slug, page_no = None, paginate_by = 10):
         raise Http404
     f = PhpbbForum.objects.get(pk = forum_id)
     if f.get_slug() != slug:
-        return HttpResponseRedirect(f.get_absolute_url())
+        return HttpResponsePermanentRedirect(f.get_absolute_url())
     topics = f.phpbbtopic_set.all().order_by('-topic_last_post_time_int')
     paginator = Paginator(topics, paginate_by)
     try:
@@ -93,7 +94,7 @@ def topic(request, topic_id, slug, page_no=None, paginate_by=10):
     if page_no:
         try:
             if int(page_no) == 1:
-                return HttpResponseRedirect("../")
+                return HttpResponsePermanentRedirect("../")
         except:
             pass
         path_prefix = "../"
@@ -113,7 +114,7 @@ def topic(request, topic_id, slug, page_no=None, paginate_by=10):
         raise Http404
     posts = t.phpbbpost_set.all()
     if t.get_slug() != slug:
-        return HttpResponseRedirect(t.get_absolute_url())
+        return HttpResponsePermanentRedirect(t.get_absolute_url())
     paginator = Paginator(posts, paginate_by)
     try:
         page = paginator.page(page_no)
@@ -146,7 +147,7 @@ def topic_archive(request, topic_id, slug):
         raise Http404
     posts = t.phpbbpost_set.all()
     if t.get_slug() != slug:
-        return HttpResponseRedirect(t.get_absolute_url())
+        return HttpResponsePermanentRedirect(t.get_absolute_url())
     c = RequestContext(request, {}, [phpbb_config_context])
     return render_to_response(settings.PHPBB_TOPIC_ARCHIVE_DETAIL_TMPL, {
         'object': t,
@@ -156,7 +157,7 @@ def topic_archive(request, topic_id, slug):
 def topic_paginated_redirect(request, topic_id, slug, page_no=None,
                              paginate_by=10):
     """Compatibility view to redirect the old paginated URLs."""
-    return HttpResponseRedirect("../")
+    return HttpResponsePermanentRedirect("../")
 
 def unanswered(request):
     topics = PhpbbTopic.objects.filter(topic_replies = 0)
@@ -174,10 +175,10 @@ def handle_viewtopic(request):
         try:
           topic_id_int = int(topic_id)
           t = get_object_or_404(PhpbbTopic, pk=topic_id_int)
-          return HttpResponseRedirect(t.get_absolute_url())
+          return HttpResponsePermanentRedirect(t.get_absolute_url())
         except ValueError, e:
           raise Http404
     if request.GET.has_key('p'):
         post_id = request.GET['p']
         p = get_object_or_404(PhpbbPost, pk=post_id)
-        return HttpResponseRedirect(p.get_absolute_url())
+        return HttpResponsePermanentRedirect(p.get_absolute_url())
