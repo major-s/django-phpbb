@@ -19,7 +19,7 @@
 # Boston, MA  02110-1301  USA
 
 from django.utils.translation import gettext_lazy as _
-from django.contrib.syndication.feeds import Feed
+from django.contrib.syndication.views import Feed
 from models import PhpbbPost
 from phpbb import querysets
 
@@ -34,6 +34,6 @@ class LatestPhpbbPosts(Feed):
     link = "/forum/"
     description = _("Newest posts on the forum.")
     def items(self):
-        return querysets.forumqs.order_by('-post_time_int')[:20]
+        return querysets.postqs.order_by('-post_time_int')[:20]
     def item_link(self, obj):
         return obj.get_external_url()

@@ -10,5 +10,7 @@ import phpbb.models
 # More information:
 # http://code.djangoproject.com/wiki/MultipleColumnPrimaryKeys
 forumqs = phpbb.models.PhpbbForum.objects
+postqs = phpbb.models.PhpbbPost.objects
 for excluded_forum_id in settings.PHPBB_BLOCKED_FORUMS:
   forumqs = forumqs.exclude(forum_id=excluded_forum_id)
+  postqs = postqs.exclude(forum__forum_id=excluded_forum_id)
